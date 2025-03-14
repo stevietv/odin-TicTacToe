@@ -1,0 +1,96 @@
+@import url('https://fonts.googleapis.com/css2?family=Caveat+Brush&display=swap');
+
+.caveat-brush-regular {
+    font-family: "Caveat Brush", cursive;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 95vh;
+    gap: 10px;
+}
+
+.title {
+    font-size: 5em;
+    font-weight: 600;
+    margin-bottom: 70px;
+}
+
+.header, .footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    column-gap: 15px;
+}
+
+.cite {
+    float: right;
+}
+
+.board-container {
+    display: grid;
+    grid-template-rows: repeat(3, 100px);   
+    grid-template-columns: repeat(3, 100px);
+    justify-content: center;
+    align-content: center;
+}
+
+.field {
+    background-image: url(images/blank.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    padding: 5px;
+    -webkit-filter: grayscale(1) invert(90%);
+    filter: grayscale(1) invert(90%);
+}
+
+.border-l {
+    border-left: 2px solid #181818;
+}
+
+.border-r {
+    border-right: 2px solid #181818;
+}
+
+.border-t {
+    border-top: 2px solid #181818;
+}
+
+.border-b {
+    border-bottom: 2px solid #181818;
+}
+
+img {
+    -webkit-filter: grayscale(1) invert(90%);
+    filter: grayscale(1) invert(90%);
+}
+
+body {
+    background-image: url(images/chalkboard.jpg);
+    background-size: cover;
+    color: #e7e7e7;
+    font-family: "Caveat Brush", cursive;
+    font-weight: 400;
+    font-style: normal;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+button, input[type="submit"], input[type="reset"] {
+	background: none;
+	color: inherit;
+	border: none;
+	padding: 0;
+	font: inherit;
+	cursor: pointer;
+	outline: inherit;
+    font-size: 2em;
+}

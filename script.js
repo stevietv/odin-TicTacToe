@@ -22,7 +22,7 @@ const Gameboard = (() => {
 
 
 
-function createPlayer (marker) {
+function createPlayer(marker) {
     return { marker }
 }
 
@@ -34,16 +34,20 @@ const Game = (() => {
     let currentPlayer = playerOne;
 
     const takeTurn = (location) => {
-        if(Gameboard.placeMarker(location, currentPlayer.marker)){
+        if (winner == null && Gameboard.placeMarker(location, currentPlayer.marker)) {
             console.log(Gameboard.getBoard())
-            if (currentPlayer === playerOne)
-                currentPlayer = playerTwo;
-            else
-                currentPlayer = playerOne;
+            if (!checkWin()) {
+                if (currentPlayer === playerOne)
+                    currentPlayer = playerTwo;
+                else
+                    currentPlayer = playerOne;
+            }
+            Render();
         }
-
-        checkWin();
     }
+
+    const getWinner = () => winner;
+    const getCurrentPlayer = () => currentPlayer;
 
     const checkWin = () => {
         const board = Gameboard.getBoard();
@@ -59,11 +63,11 @@ const Game = (() => {
             [2, 4, 6]
         ];
 
-        for(let condition of winConditions) {
+        for (let condition of winConditions) {
             const [posA, posB, posC] = condition;
-            
-            if(board[posA] && board[posA] === board[posB] && board[posA] === board[posC]) {
-                console.log("we have a winner");
+
+            if (board[posA] && board[posA] === board[posB] && board[posA] === board[posC]) {
+                console.log(`we have a winner - ${currentPlayer.marker}`);
                 winner = currentPlayer;
                 return true;
             }
@@ -72,9 +76,66 @@ const Game = (() => {
         return false;
     }
 
+    const resetGame = () => {
+        winner = null;
+        currentPlayer = playerOne;
+        Gameboard.resetBoard();
+        Render();
+    }
 
-    return { takeTurn };
+    return { takeTurn, getWinner, getCurrentPlayer, resetGame };
 
 })();
 
 
+function Render() {
+
+    let board = Gameboard.getBoard();
+    
+    for (let index = 0; index < 9; index++) {
+        let id = `box-${index}`;
+        let field = document.getElementById(id);
+
+        switch (board[index]) {
+            case "O":
+                field.style.backgroundImage = "url('images/O.png')";
+                break;
+            case "X":
+                field.style.backgroundImage = "url('images/X.png')";
+                break;
+            default:
+                field.style.backgroundImage = "";
+        }
+    }
+
+    let nextPlayerImage = document.getElementById('nextPlayer');
+    nextPlayerImage.src = `images/${Game.getCurrentPlayer().marker}.png`;
+
+    let winner = Game.getWinner();
+    if (winner) {
+        document.getElementById('winnerText').innerHTML = "The Winner Is:";
+        document.getElementById('winnerImage').src = `images/${winner.marker}.png`;
+    }
+    else {
+        document.getElementById('winnerText').innerHTML = "&nbsp;";
+        document.getElementById('winnerImage').src = 'images/blank.png';
+    }
+}
+
+function EnableClicks() {
+    const fields = document.querySelectorAll('div.field');
+    fields.forEach(field => {
+        field.addEventListener('click', () => {
+            let id = field.id.slice(-1);
+            Game.takeTurn(id);
+        })
+    })
+
+    const resetButton = document.getElementById('reset');
+    
+    resetButton.addEventListener('click', () => {
+        Game.resetGame();
+    })
+}
+
+EnableClicks();
